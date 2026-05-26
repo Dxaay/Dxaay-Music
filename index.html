@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Library Music Dxaay</title>
+
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+font-family:Inter,sans-serif;
+color:#fff;
+overflow-x:hidden;
+}
+
+/* BACKGROUND */
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:url("https://i.pinimg.com/1200x/be/9d/e0/be9de077f39bfa60fa4b7c3700ca00db.jpg") center/cover no-repeat;
+filter:blur(5px) brightness(.55);
+transform:scale(1.08);
+z-index:-2;
+}
+
+body::after{
+content:"";
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.65);
+z-index:-1;
+}
+
+/* SIDEBAR */
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+height:100vh;
+width:70px;
+background:rgba(0,0,0,.6);
+backdrop-filter:blur(20px);
+transition:.3s;
+overflow:hidden;
+z-index:1000;
+}
+
+.sidebar:hover{width:200px;}
+
+.icon{
+display:flex;
+align-items:center;
+gap:15px;
+height:55px;
+padding-left:18px;
+color:#aaa;
+text-decoration:none;
+cursor:pointer;
+}
+
+.icon i{font-size:22px;min-width:30px;text-align:center;}
+.icon span{opacity:0;transition:.2s;}
+.sidebar:hover .icon span{opacity:1;}
+.icon:hover{color:#ff2a2a;}
+
+/* CONTENT */
+.content{
+margin-left:70px;
+padding:30px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+gap:14px;
+}
+
+.card{
+aspect-ratio:1;
+border-radius:14px;
+overflow:hidden;
+cursor:pointer;
+border:1px solid rgba(255,255,255,.08);
+position:relative;
+}
+
+.card img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.card-info{
+position:absolute;
+bottom:0;
+left:0;
+right:0;
+padding:8px;
+background:linear-gradient(to top,rgba(0,0,0,.85),transparent);
+}
+
+.title{font-size:12px;font-weight:600;}
+.artist{font-size:10px;opacity:.7;}
+
+/* PLAYER */
+.player{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%) translateY(140px);
+opacity:0;
+
+width:560px;
+background:rgba(10,10,10,.92);
+backdrop-filter:blur(25px);
+border:1px solid rgba(255,255,255,.08);
+box-shadow:0 25px 70px rgba(0,0,0,.9);
+
+border-radius:22px;
+padding:14px;
+transition:.35s;
+z-index:2000;
+}
+
+.player.show{
+transform:translateX(-50%) translateY(0);
+opacity:1;
+}
+
+.top{display:flex;gap:10px;align-items:center;}
+.cover{width:60px;height:60px;border-radius:12px;object-fit:cover;}
+.info{flex:1;}
+.name{font-size:13px;font-weight:600;}
+.sub{font-size:10px;opacity:.7;}
+.btn{cursor:pointer;color:#ff2a2a;}
+
+/* PROGRESS */
+.progress input{
+width:100%;
+accent-color:#ff2a2a;
+}
+
+.time{
+display:flex;
+justify-content:space-between;
+font-size:10px;
+opacity:.7;
+}
+
+/* CONTROLS */
+.controls{
+display:flex;
+justify-content:center;
+gap:16px;
+margin-top:8px;
+}
+
+.controls i{
+cursor:pointer;
+font-size:15px;
+color:#777;
+}
+
+.controls i.active{
+color:#ff2a2a;
+}
+
+/* VOLUME */
+.volume{
+display:flex;
+align-items:center;
+gap:10px;
+margin-top:10px;
+}
+
+.volume input{
+width:120px;
+accent-color:#ff2a2a;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="audio"></audio>
+
+<div class="sidebar">
+<a href="https://www.instagram.com/dxaay.fl/" class="icon"><i class="fab fa-instagram"></i><span>Instagram</span></a>
+<a href="https://www.youtube.com/@DxaayDev" class="icon"><i class="fab fa-youtube"></i><span>YouTube</span></a>
+<a href="https://open.spotify.com/intl-es/artist/1EriW1cbXP40kxp8mUtcWv" class="icon"><i class="fab fa-spotify"></i><span>Spotify</span></a>
+<a href="https://music.apple.com/es/artist/dxaay/1762548811" class="icon"><i class="fab fa-apple"></i><span>Apple</span></a>
+</div>
+
+<div class="content">
+<h1>Library Music Dxaay</h1>
+
+<div class="grid">
+
+<div class="card" onclick="playSong(0)">
+<img src="https://i.pinimg.com/736x/b1/9f/ad/b19fadced0df4ce07ca502bc12f913be.jpg">
+<div class="card-info"><div class="title">Melankolico</div><div class="artist">Dxaay</div></div>
+</div>
+
+<div class="card" onclick="playSong(1)">
+<img src="https://i.pinimg.com/736x/e0/d0/20/e0d02042cd72d7e23b732824d1862444.jpg">
+<div class="card-info"><div class="title">Ella me quiere ahi</div><div class="artist">Dxaay</div></div>
+</div>
+
+<div class="card" onclick="playSong(2)">
+<img src="https://i.pinimg.com/736x/85/24/95/852495abaa11b64550c58571673baa53.jpg">
+<div class="card-info"><div class="title">Fuego</div><div class="artist">Dxaay</div></div>
+</div>
+
+<div class="card" onclick="playSong(3)">
+<img src="https://i.pinimg.com/736x/87/2d/c7/872dc7a25f5cb5ba4db5708da6fc6da7.jpg">
+<div class="card-info"><div class="title">Droga del Mac</div><div class="artist">Dxaay</div></div>
+</div>
+
+<div class="card" onclick="playSong(4)">
+<img src="https://i.pinimg.com/1200x/61/4d/a9/614da92a5058a91f28ba352377ec37f2.jpg">
+<div class="card-info"><div class="title">Ready Up</div><div class="artist">Dxaay</div></div>
+</div>
+
+</div>
+</div>
+
+<!-- PLAYER -->
+<div class="player" id="player">
+
+<div class="top">
+<img id="cover" class="cover">
+<div class="info">
+<div class="name" id="name">Nada sonando</div>
+<div class="sub">Dxaay</div>
+</div>
+<div class="btn" onclick="closePlayer()">✕</div>
+</div>
+
+<div class="progress">
+<input type="range" id="progress" value="0">
+</div>
+
+<div class="time">
+<span id="current">0:00</span>
+<span id="duration">0:00</span>
+</div>
+
+<div class="controls">
+<i class="fas fa-random" id="shuffleBtn" onclick="toggleShuffle()"></i>
+<i class="fas fa-backward" onclick="prevSong()"></i>
+<i class="fas fa-play" id="play"></i>
+<i class="fas fa-forward" onclick="nextSong()"></i>
+<i class="fas fa-redo" id="repeatBtn" onclick="toggleRepeat()"></i>
+</div>
+
+<div class="volume">
+<i class="fas fa-volume-up"></i>
+<input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+</div>
+
+</div>
+
+<script>
+const audio=document.getElementById("audio");
+const player=document.getElementById("player");
+const playBtn=document.getElementById("play");
+const nameEl=document.getElementById("name");
+const cover=document.getElementById("cover");
+
+const progress=document.getElementById("progress");
+const current=document.getElementById("current");
+const duration=document.getElementById("duration");
+const volume=document.getElementById("volume");
+
+let currentSong=0;
+let shuffle=false;
+let repeat=false;
+
+/* 🔥 IMPORTANTE: rutas RELATIVAS (GitHub Pages) */
+const songs=[
+{ name:"Melankolico", src:"music/melankolico.wav", cover:"https://i.pinimg.com/736x/b1/9f/ad/b19fadced0df4ce07ca502bc12f913be.jpg"},
+{ name:"Ella me quiere ahi", src:"music/ELLA M QUIERE AHI.mp3", cover:"https://i.pinimg.com/736x/e0/d0/20/e0d02042cd72d7e23b732824d1862444.jpg"},
+{ name:"Fuego", src:"music/AFUERA LLUEVE.mp3", cover:"https://i.pinimg.com/736x/85/24/95/852495abaa11b64550c58571673baa53.jpg"},
+{ name:"Droga del Mac", src:"music/DROGA DEL MAC.mp3", cover:"https://i.pinimg.com/736x/87/2d/c7/872dc7a25f5cb5ba4db5708da6fc6da7.jpg"},
+{ name:"Ready Up", src:"music/READY UP.mp3", cover:"https://i.pinimg.com/1200x/61/4d/a9/614da92a5058a91f28ba352377ec37f2.jpg"}
+];
+
+function playSong(i){
+currentSong=i;
+audio.src=songs[i].src;
+audio.play();
+
+nameEl.innerText=songs[i].name;
+cover.src=songs[i].cover;
+
+player.classList.add("show");
+updatePlay();
+}
+
+function nextSong(){
+currentSong=shuffle?
+Math.floor(Math.random()*songs.length):
+(currentSong+1)%songs.length;
+
+playSong(currentSong);
+}
+
+function prevSong(){
+currentSong=(currentSong-1+songs.length)%songs.length;
+playSong(currentSong);
+}
+
+function updatePlay(){
+playBtn.classList.toggle("fa-play", audio.paused);
+playBtn.classList.toggle("fa-pause", !audio.paused);
+}
+
+playBtn.onclick=()=>{
+if(audio.paused) audio.play();
+else audio.pause();
+updatePlay();
+};
+
+audio.addEventListener("play",updatePlay);
+audio.addEventListener("pause",updatePlay);
+
+function toggleShuffle(){
+shuffle=!shuffle;
+document.getElementById("shuffleBtn").classList.toggle("active");
+}
+
+function toggleRepeat(){
+repeat=!repeat;
+document.getElementById("repeatBtn").classList.toggle("active");
+}
+
+audio.addEventListener("timeupdate",()=>{
+progress.value=(audio.currentTime/audio.duration)*100 || 0;
+current.innerText=format(audio.currentTime);
+});
+
+audio.addEventListener("loadedmetadata",()=>{
+duration.innerText=format(audio.duration);
+});
+
+function format(t){
+let m=Math.floor(t/60);
+let s=Math.floor(t%60);
+return `${m}:${s<10?"0"+s:s}`;
+}
+
+progress.oninput=()=>{
+audio.currentTime=(progress.value/100)*audio.duration;
+};
+
+volume.oninput=()=>{
+audio.volume=volume.value;
+};
+
+audio.onended=()=>{
+if(repeat) playSong(currentSong);
+else nextSong();
+};
+</script>
+
+</body>
+</html>
