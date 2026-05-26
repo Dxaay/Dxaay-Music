@@ -6,7 +6,6 @@
 <title>Library Music Dxaay</title>
 
 <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/727/727245.png">
-
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
@@ -89,7 +88,11 @@ border:1px solid rgba(255,255,255,.08);
 position:relative;
 }
 
-.card img{width:100%;height:100%;object-fit:cover;}
+.card img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
 
 .card-info{
 position:absolute;
@@ -128,7 +131,6 @@ transform:translateX(-50%) translateY(0);
 opacity:1;
 }
 
-/* TOP */
 .top{display:flex;gap:10px;align-items:center;}
 .cover{width:60px;height:60px;border-radius:12px;object-fit:cover;}
 .info{flex:1;}
@@ -161,7 +163,6 @@ margin-top:8px;
 cursor:pointer;
 font-size:15px;
 color:#777;
-transition:.2s;
 }
 
 .controls i.active{
@@ -279,12 +280,13 @@ let currentSong=0;
 let shuffle=false;
 let repeat=false;
 
+/* 🔥 IMPORTANTE: rutas RELATIVAS (GitHub Pages) */
 const songs=[
-{ name:"Melankolico", src:"file:///C:/Users/Dxaay/Pictures/PAGE DXAAY/music/melankolico.wav", cover:"https://i.pinimg.com/736x/b1/9f/ad/b19fadced0df4ce07ca502bc12f913be.jpg"},
-{ name:"Ella me quiere ahi", src:"file:///C:/Users/Dxaay/Pictures/PAGE DXAAY/music/ELLA M QUIERE AHI.mp3", cover:"https://i.pinimg.com/736x/e0/d0/20/e0d02042cd72d7e23b732824d1862444.jpg"},
-{ name:"Fuego", src:"file:///C:/Users/Dxaay/Pictures/PAGE DXAAY/music/AFUERA LLUEVE.mp3", cover:"https://i.pinimg.com/736x/85/24/95/852495abaa11b64550c58571673baa53.jpg"},
-{ name:"Droga del Mac", src:"file:///C:/Users/Dxaay/Pictures/PAGE DXAAY/music/DROGA DEL MAC.mp3", cover:"https://i.pinimg.com/736x/87/2d/c7/872dc7a25f5cb5ba4db5708da6fc6da7.jpg"},
-{ name:"Ready Up", src:"file:///C:/Users/Dxaay/Pictures/PAGE DXAAY/music/READY UP.mp3", cover:"https://i.pinimg.com/1200x/61/4d/a9/614da92a5058a91f28ba352377ec37f2.jpg"}
+{ name:"Melankolico", src:"music/melankolico.wav", cover:"https://i.pinimg.com/736x/b1/9f/ad/b19fadced0df4ce07ca502bc12f913be.jpg"},
+{ name:"Ella me quiere ahi", src:"music/ELLA M QUIERE AHI.mp3", cover:"https://i.pinimg.com/736x/e0/d0/20/e0d02042cd72d7e23b732824d1862444.jpg"},
+{ name:"Fuego", src:"music/AFUERA LLUEVE.mp3", cover:"https://i.pinimg.com/736x/85/24/95/852495abaa11b64550c58571673baa53.jpg"},
+{ name:"Droga del Mac", src:"music/DROGA DEL MAC.mp3", cover:"https://i.pinimg.com/736x/87/2d/c7/872dc7a25f5cb5ba4db5708da6fc6da7.jpg"},
+{ name:"Ready Up", src:"music/READY UP.mp3", cover:"https://i.pinimg.com/1200x/61/4d/a9/614da92a5058a91f28ba352377ec37f2.jpg"}
 ];
 
 function playSong(i){
@@ -312,15 +314,9 @@ currentSong=(currentSong-1+songs.length)%songs.length;
 playSong(currentSong);
 }
 
-/* PLAY/PAUSE FIX REAL */
 function updatePlay(){
-if(audio.paused){
-playBtn.classList.remove("fa-pause");
-playBtn.classList.add("fa-play");
-}else{
-playBtn.classList.remove("fa-play");
-playBtn.classList.add("fa-pause");
-}
+playBtn.classList.toggle("fa-play", audio.paused);
+playBtn.classList.toggle("fa-pause", !audio.paused);
 }
 
 playBtn.onclick=()=>{
@@ -332,7 +328,6 @@ updatePlay();
 audio.addEventListener("play",updatePlay);
 audio.addEventListener("pause",updatePlay);
 
-/* SHUFFLE / REPEAT */
 function toggleShuffle(){
 shuffle=!shuffle;
 document.getElementById("shuffleBtn").classList.toggle("active");
@@ -343,14 +338,13 @@ repeat=!repeat;
 document.getElementById("repeatBtn").classList.toggle("active");
 }
 
-/* TIME */
-audio.addEventListener("loadedmetadata",()=>{
-duration.innerText=format(audio.duration);
-});
-
 audio.addEventListener("timeupdate",()=>{
 progress.value=(audio.currentTime/audio.duration)*100 || 0;
 current.innerText=format(audio.currentTime);
+});
+
+audio.addEventListener("loadedmetadata",()=>{
+duration.innerText=format(audio.duration);
 });
 
 function format(t){
@@ -359,17 +353,14 @@ let s=Math.floor(t%60);
 return `${m}:${s<10?"0"+s:s}`;
 }
 
-/* SEEK */
 progress.oninput=()=>{
 audio.currentTime=(progress.value/100)*audio.duration;
 };
 
-/* VOLUME */
 volume.oninput=()=>{
 audio.volume=volume.value;
 };
 
-/* END */
 audio.onended=()=>{
 if(repeat) playSong(currentSong);
 else nextSong();
